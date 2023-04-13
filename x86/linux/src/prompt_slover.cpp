@@ -2,7 +2,7 @@
 
 PromptSlover::PromptSlover()
 {
-	// load CLIP model
+	// 加载CLIP模型
 	net.opt.use_vulkan_compute = false;
 	net.opt.use_winograd_convolution = false;
 	net.opt.use_sgemm_convolution = false;
@@ -13,7 +13,7 @@ PromptSlover::PromptSlover()
 	net.load_param("assets/FrozenCLIPEmbedder-fp16.param");
 	net.load_model("assets/FrozenCLIPEmbedder-fp16.bin");
 
-	// read tokenizer dict
+	// 读取tokenizer字典
 	std::ifstream infile;
 	std::string pathname = "assets/vocab.txt";
 	infile.open(pathname.data());
@@ -29,10 +29,10 @@ PromptSlover::PromptSlover()
 
 ncnn::Mat PromptSlover::get_conditioning(string& prompt)
 {
-	// parse attention, `()` to improve and `[]` to reduce
+	// 重要度计算可以匹配“()”和“[]”，圆括号是加重要度，方括号是减重要度
 	vector<pair<string, float>> parsed = parse_prompt_attention(prompt);
 
-	// token to ids
+	// token转ids
 	vector<vector<int>> tokenized;
 	{
 		for (auto p : parsed) {
@@ -45,6 +45,7 @@ ncnn::Mat PromptSlover::get_conditioning(string& prompt)
 		}
 	}
 
+	// 一些处理
 	vector<int> remade_tokens;
 	vector<float> multipliers;
 	{
@@ -89,7 +90,7 @@ ncnn::Mat PromptSlover::get_conditioning(string& prompt)
 		multipliers.insert(multipliers.end(), tmp_multipliers.begin(), tmp_multipliers.end());
 	}
 
-	// split
+	// 切分
 	ncnn::Mat conds(768, 0);
 	{
 		while (remade_tokens.size() > 0) {

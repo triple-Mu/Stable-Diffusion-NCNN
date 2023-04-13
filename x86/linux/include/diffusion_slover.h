@@ -6,13 +6,12 @@
 #include <stack>
 #include <fstream>
 #include <map>
-#include <cmath>
-#include <ncnn/net.h>
+#include <math.h>
+#include <net.h>
 #include <opencv2/opencv.hpp>
 #include <algorithm>
-#include <ctime>
-#include <ncnn/benchmark.h>
-
+#include <time.h>
+#include "benchmark.h"
 using namespace std;
 
 class DiffusionSlover
@@ -20,7 +19,8 @@ class DiffusionSlover
 public:
     DiffusionSlover(int h, int w, int mode);
 
-    ncnn::Mat sampler(int seed, int step, ncnn::Mat& c, ncnn::Mat& uc);
+    ncnn::Mat sampler_txt2img(int seed, int step, ncnn::Mat& c, ncnn::Mat& uc);
+    ncnn::Mat sampler_img2img(int seed, int step, ncnn::Mat& c, ncnn::Mat& uc, vector<ncnn::Mat>& init);
 
 private:
     void generate_param(int height, int width);
@@ -30,6 +30,10 @@ private:
 
 private:
     float log_sigmas[1000] = { 0 };
+    const float guidance_scale = 7.5;
+    const float strength = 0.75;
+
+    const float factor[4] = { 0.18215f, 0.18215f, 0.18215f, 0.18215f };
 
     ncnn::Net net;
 

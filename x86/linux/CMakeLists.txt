@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.1)
 project(StableDiffusionNCNN)
 
-set(DEBUG                   true)
-set(OPTIMIZATION_LEVEL      0)
+set(DEBUG                   false)
+set(OPTIMIZATION_LEVEL      3)
 
 set(IS_SHOW_IMAGE true)
 

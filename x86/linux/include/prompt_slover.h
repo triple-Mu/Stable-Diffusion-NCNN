@@ -6,9 +6,8 @@
 #include <stack>
 #include <fstream>
 #include <map>
-#include <cmath>
-#include <ncnn/net.h>
-
+#include <math.h>
+#include <net.h>
 using namespace std;
 
 class PromptSlover
